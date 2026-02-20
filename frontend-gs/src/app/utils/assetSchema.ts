@@ -7,7 +7,7 @@ export const assetSchema = z.object({
   acquisitionDate: z
     .string()
     .min(1, "Informe a data de aquisição")
-    .regex(/^\d{2}\/\d{2}\/\d{4}$/, "Use o formato DD/MM/AAAA"),
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Use o formato AAAA-MM-DD"),
   status: z.string(),
 });
 

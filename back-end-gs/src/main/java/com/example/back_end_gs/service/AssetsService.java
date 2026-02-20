@@ -35,9 +35,9 @@ public class AssetsService {
 
     public AssetsEntity update(Long id, AssetRequest req) {
         AssetsEntity a = findById(id);
-        if (repo.existsBySerialNumberAndIdNot(req.serialNumber, id)) {
-            throw new IllegalArgumentException("serialNumber já cadastrado");
-        }
+        // if (repo.existsBySerialNumberAndIdNot(req.serialNumber, id)) {
+        //     throw new IllegalArgumentException("serialNumber já cadastrado");
+        // }
         apply(a, req);
         return repo.save(a);
     }

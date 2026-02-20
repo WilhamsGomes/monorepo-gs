@@ -21,6 +21,9 @@ interface AssetsContextValue {
 
   editing: AssetRow | null;
   setEditing: React.Dispatch<React.SetStateAction<AssetRow | null>>;
+
+  collapsed: boolean;
+  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -30,6 +33,7 @@ export function AssetsProvider({ children }: { children: React.ReactNode }) {
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string[]>([]);
   const [statusFilter, setStatusFilter] = useState<string[]>([]);
+  const [collapsed, setCollapsed] = useState(false);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [mode, setMode] = useState<Mode>("create");
@@ -50,6 +54,8 @@ export function AssetsProvider({ children }: { children: React.ReactNode }) {
         setMode,
         editing,
         setEditing,
+        collapsed,
+        setCollapsed,
       }}
     >
       {children}

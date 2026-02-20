@@ -26,6 +26,7 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
       top="0"
       zIndex={10}
       padding={8}
+      maxWidth={"100%"}
     >
       <Box>
         <Heading size="lg" color="blackAlpha.900">
@@ -48,8 +49,12 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
         <Portal>
           <Menu.Positioner>
             <Menu.Content>
-              <Menu.Item value="profile" cursor={"pointer"}>Perfil</Menu.Item>
-              <Menu.Item value="logout" cursor={"pointer"}>Sair</Menu.Item>
+              <Menu.Item value="profile" cursor={"pointer"}>
+                Perfil
+              </Menu.Item>
+              <Menu.Item value="logout" cursor={"pointer"}>
+                Sair
+              </Menu.Item>
             </Menu.Content>
           </Menu.Positioner>
         </Portal>

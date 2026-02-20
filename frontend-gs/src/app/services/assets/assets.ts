@@ -1,10 +1,11 @@
+import type { AssetStatus } from "@/app/types/asset";
 import { httpClient } from "../http";
 
 export interface AssetsRequest {
   name: string;
   category: string;
   serialNumber: string;
-  acquisitionDate: Date;
+  acquisitionDate: string;
   status: string;
 }
 
@@ -14,7 +15,11 @@ export interface AssetsResponse {
   category: string;
   serialNumber: string;
   acquisitionDate: string;
-  status: string;
+  status: AssetStatus;
+}
+
+export interface AssetsRequestUpdate extends AssetsRequest {
+  id: string;
 }
 
 export async function create(params: AssetsRequest) {
@@ -29,14 +34,14 @@ export async function findAll() {
   return data;
 }
 
-export async function edit(params: Partial<AssetsRequest>) {
-  const { data } = await httpClient.put<AssetsResponse>("/assets", params);
+export async function edit(id: string, params: Partial<AssetsRequest>) {
+  const { data } = await httpClient.put<AssetsResponse>( `/assets/${id}`, params);
 
   return data;
 }
 
 export async function deleteAsset(id: string) {
-  const { data } = await httpClient.delete(`/assets?id=${id}`);
+  const { data } = await httpClient.delete(`/assets/${id}`);
 
   return data;
 }

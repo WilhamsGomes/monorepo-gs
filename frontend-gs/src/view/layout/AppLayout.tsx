@@ -9,13 +9,13 @@ export function AppLayout() {
   const meta = usePageMeta(pathname);
 
   return (
-    <Flex minH="100vh" bg="gray.50">
+    <Flex minH="100vh" bg="gray.50"  maxWidth={"100%"} overflow={"hidden"}>
       <Sidebar />
 
-      <Box flex="1">
+      <Box flex="1"  maxWidth={"100%"}>
         <Topbar title={meta.title} subtitle={meta.subtitle} />
 
-        <Box px={{ base: 4, md: 8 }} py={{ base: 4, md: 6 }}>
+        <Box px={{ base: 4, md: 8 }} py={{ base: 4, md: 6 }}  maxWidth={"100%"}>
           <Outlet />
         </Box>
       </Box>

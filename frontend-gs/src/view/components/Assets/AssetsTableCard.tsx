@@ -1,4 +1,4 @@
-import { Button, Card, HStack, Icon, Text } from "@chakra-ui/react";
+import { Box, Button, Card, Grid, GridItem, HStack, Icon, Text } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
 import { useMemo } from "react";
 
@@ -26,13 +26,13 @@ const CATEGORY_OPTIONS = [
 ];
 
 const STATUS_OPTIONS = [
-  { label: "Ativo", value: "ATIVO" },
-  { label: "Manutenção", value: "MANUTENCAO" },
-  { label: "Inativo", value: "INATIVO" },
+  { label: "Ativo", value: "ACTIVE" },
+  { label: "Manutenção", value: "MAINTENANCE" },
+  { label: "Inativo", value: "INACTIVE" },
 ];
 
 export function AssetsTableCard() {
-  const { data = [], isLoading } = useAssetsQuery();
+  const { data = [], isLoading, refetch } = useAssetsQuery();
 
   const {
     search,
@@ -70,7 +70,6 @@ export function AssetsTableCard() {
 
       return matchSearch && matchCategory && matchStatus;
     });
-
   }, [data, search, categoryFilter, statusFilter]);
 
   const openCreate = () => {
@@ -87,6 +86,7 @@ export function AssetsTableCard() {
 
   const handleDelete = async (id: string) => {
     await deleteMutation.mutateAsync(id);
+    await refetch();
   };
 
   const handleSubmit = async (values: AssetFormValues) => {
@@ -95,11 +95,18 @@ export function AssetsTableCard() {
     } else if (editing) {
       await editMutation.mutateAsync({
         id: editing.id,
-        ...values,
+        data: values,
       });
     }
 
+    await refetch();
     setModalOpen(false);
+  };
+
+  const clearFilter = () => {
+    setCategoryFilter([]);
+    setStatusFilter([]);
+    setSearch("");
   };
 
   return (
@@ -108,45 +115,95 @@ export function AssetsTableCard() {
       borderRadius="16px"
       borderWidth="1px"
       borderColor="gray.200"
+      display={"flex"}
     >
       <Card.Body>
-        <HStack justify="space-between" align="center" mb="4">
+        <HStack
+          justify="space-between"
+          align={{ base: "stretch", md: "center" }}
+          mb="4"
+          flexDir={{ base: "column", md: "row" }}
+          gap={{ base: 3, md: 0 }}
+        >
           <Text fontSize="lg" fontWeight="700" color="blackAlpha.900">
             Ativos
           </Text>
 
-          <Button colorPalette="blue" borderRadius="12px" onClick={openCreate}>
+          <Button
+            colorPalette="blue"
+            borderRadius="12px"
+            onClick={openCreate}
+            width={{ base: "100%", md: "auto" }}
+          >
             <Icon as={FiPlus} />
             Adicionar ativo
           </Button>
         </HStack>
 
-        <HStack mb="4" align="center" justify="center">
-          <AssetSearchInput value={search} onChange={setSearch} />
+        <Grid
+          mb="4"
+          gap="3"
+          templateColumns={{
+            base: "1fr",
+            sm: "1fr 1fr",
+            lg: "2fr 1fr 1fr auto",
+          }}
+          alignItems="center"
+        >
+          <GridItem minW={0}>
+            <AssetSearchInput value={search} onChange={setSearch} />
+          </GridItem>
 
-          <AssetSelect
-            collection={categoryCollection}
-            value={categoryFilter}
-            onChange={setCategoryFilter}
-            placeholder="Todas categorias"
-          />
+          <GridItem minW={0}>
+            <AssetSelect
+              collection={categoryCollection}
+              value={categoryFilter}
+              onChange={setCategoryFilter}
+              placeholder="Todas categorias"
+              width="100%"
+            />
+          </GridItem>
 
-          <AssetSelect
-            collection={statusCollection}
-            value={statusFilter}
-            onChange={setStatusFilter}
-            placeholder="Todos status"
-          />
-        </HStack>
+          <GridItem minW={0}>
+            <AssetSelect
+              collection={statusCollection}
+              value={statusFilter}
+              onChange={setStatusFilter}
+              placeholder="Todos status"
+              width="100%"
+            />
+          </GridItem>
+
+          <GridItem>
+            <Button
+              colorPalette="red"
+              borderRadius="12px"
+              onClick={clearFilter}
+              width={{ base: "100%", lg: "auto" }}
+            >
+              Limpar
+            </Button>
+          </GridItem>
+        </Grid>
 
         {isLoading ? (
           <Text>Carregando ativos...</Text>
         ) : (
-          <AssetsTable
-            rows={data}
-            onEdit={() => openEdit}
-            onDelete={() => handleDelete}
-          />
+          <Box
+            overflowX="auto"
+            overflowY="hidden"
+            width="100%"
+            minW={0}
+            borderRadius="12px"
+          >
+            <Box minW="900px">
+              <AssetsTable
+                rows={filteredRows}
+                onEdit={openEdit}
+                onDelete={handleDelete}
+              />
+            </Box>
+          </Box>
         )}
 
         <AssetFormModal

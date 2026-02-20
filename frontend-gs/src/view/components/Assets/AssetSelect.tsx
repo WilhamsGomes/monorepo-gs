@@ -2,6 +2,7 @@ import { Portal, Select } from "@chakra-ui/react";
 import type { ListCollection } from "@chakra-ui/react";
 
 type AssetSelectProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   collection: ListCollection<any>;
   value: string[];
   onChange: (values: string[]) => void;
@@ -24,10 +25,14 @@ export default function AssetSelect({
       size="sm"
       width={width}
       variant="ghost"
+      zIndex={100}
     >
       <Select.Control bg="blackAlpha.100" borderRadius="12px">
         <Select.Trigger bg="blackAlpha.100">
-          <Select.ValueText placeholder={placeholder} color={"blackAlpha.800"}/>
+          <Select.ValueText
+            placeholder={placeholder}
+            color={"blackAlpha.800"}
+          />
         </Select.Trigger>
 
         <Select.IndicatorGroup>
@@ -36,10 +41,14 @@ export default function AssetSelect({
       </Select.Control>
 
       <Portal>
-        <Select.Positioner >
-          <Select.Content  bg="blackAlpha.100">
+        <Select.Positioner bg={"blue"}>
+          <Select.Content bg="blackAlpha.100">
             {collection.items.map((item) => (
-              <Select.Item item={item} key={item.value} color={"blackAlpha.800"}>
+              <Select.Item
+                item={item}
+                key={item.value}
+                color={"white"}
+              >
                 {item.label}
                 <Select.ItemIndicator />
               </Select.Item>

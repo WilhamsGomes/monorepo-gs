@@ -8,11 +8,11 @@ import {
   Spacer,
   Icon,
 } from "@chakra-ui/react";
-import { FiGrid, FiMonitor, FiSettings } from "react-icons/fi";
-import { useState } from "react";
+import { FiGrid } from "react-icons/fi";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
 import type { IconType } from "react-icons";
+import { useAssetsContext } from "@/app/context/useSettingsContext";
 
 type NavItem = {
   label: string;
@@ -22,12 +22,10 @@ type NavItem = {
 
 const itemsNav: NavItem[] = [
   { label: "Dashboard", to: "/dashboard", icon: FiGrid },
-  { label: "Ativos", to: "/assets", icon: FiMonitor },
-  { label: "Configurações", to: "/settings", icon: FiSettings },
 ];
 
 export default function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false);
+  const { collapsed, setCollapsed } = useAssetsContext();
 
   return (
     <Box

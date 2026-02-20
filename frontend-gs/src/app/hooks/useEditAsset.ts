@@ -1,13 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { assetsService } from "../services/assets";
+import { edit, type AssetsRequest } from "../services/assets/assets";
 
 export function useEditAsset() {
-  const queryClient = useQueryClient();
+  const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: assetsService.edit,
+    mutationFn: ({ id, data }: { id: string; data: Partial<AssetsRequest> }) =>
+      edit(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["assets"] });
+      qc.invalidateQueries({ queryKey: ["assets"] });
     },
   });
 }

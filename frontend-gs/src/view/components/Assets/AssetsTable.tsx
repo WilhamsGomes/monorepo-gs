@@ -1,5 +1,6 @@
 import { getStatusUI } from "@/app/hooks/useStatusAssets";
 import type { AssetsResponse } from "@/app/services/assets/assets";
+import type { AssetRow } from "@/app/types/asset";
 import {
   Badge,
   HStack,
@@ -11,8 +12,8 @@ import { FiEdit2, FiTrash2 } from "react-icons/fi";
 
 type AssetsTableProps = {
   rows: AssetsResponse[];
-  onEdit?: () => void;
-  onDelete?: () => void;
+  onEdit: (asset: AssetRow) => void;
+  onDelete: (id: string) => void;
 };
 
 export function AssetsTable({ rows, onEdit, onDelete }: AssetsTableProps) {
@@ -74,9 +75,9 @@ export function AssetsTable({ rows, onEdit, onDelete }: AssetsTableProps) {
                   <HStack justify="flex-end">
                     <IconButton
                       aria-label="Editar"
-                      variant="ghost"
+                      variant="solid"
                       borderRadius="10px"
-                      onClick={() => onEdit}
+                      onClick={() => onEdit(a)}
                     >
                       <FiEdit2 />
                     </IconButton>
@@ -86,7 +87,7 @@ export function AssetsTable({ rows, onEdit, onDelete }: AssetsTableProps) {
                       variant="ghost"
                       color="red.500"
                       borderRadius="10px"
-                      onClick={() => onDelete}
+                      onClick={() => onDelete(a.id)}
                     >
                       <FiTrash2 />
                     </IconButton>

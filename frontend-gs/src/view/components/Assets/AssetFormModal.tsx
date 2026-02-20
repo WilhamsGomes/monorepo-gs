@@ -60,7 +60,7 @@ export function AssetFormModal({
       category: "",
       serialNumber: "",
       acquisitionDate: "",
-      status: "ATIVO",
+      status: "ACTIVE",
     },
   });
 
